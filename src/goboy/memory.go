@@ -1,7 +1,8 @@
 package GoBoy
 
 type GBMem struct {
-    mram [8 * 1024]uint8
+    /* Work RAM at 0xc000 - 0xd000 */
+    wram [8 * 1024]uint8
     vram [8 * 1024]uint8
     /* ROM bank 0, nonswitchable - I believe this means this bank is static */
     rom0 [16 * 1024] uint8
@@ -68,7 +69,7 @@ func (m *GBMem) read(addr uint16) uint8 {
         return m.cartridge.readRAM(addr)
     } else if (addr >= 0xc000 && addr < 0xd000) {
         /* WRAM0 Work RAM */
-        return uint8(0x00)
+        return wram(0x00)
     } else if (addr >= 0xd000 && addr < 0xe000) {
         /* WRAMX, switchable (1-7) in GBC mode */
         return uint8(0x00)
